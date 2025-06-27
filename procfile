@@ -1,0 +1,2 @@
+web : gunicorn task_management.wsgi:application
+release: python manage.py migrate
