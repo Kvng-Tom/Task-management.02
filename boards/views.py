@@ -1,6 +1,6 @@
-from django.shortcuts import render
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, filters
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Board, Tasks
 from .serializers import BoardSerializer, TaskSerializer
 
@@ -34,6 +34,9 @@ class BoardDeleteView(generics.DestroyAPIView):
 class TaskListCreateView(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['completed', 'priority', 'due_date']
+    ordering_fields = ['due_date', 'priority', 'created_at']
 
     def get_queryset(self):
         board_id = self.kwargs.get('board_id')
@@ -51,9 +54,17 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         board_id = self.kwargs.get('board_id')
         return Tasks.objects.filter(board__id=board_id, board__creator=self.request.user)
-    
+
     
     def destroy(self, request, *args, **kwargs):
         task = self.get_object()
         task.delete()
+        
         return Response({"message": "Task deleted successfully!"}, status=status.HTTP_200_OK)
+   
+   
+    def patch(self, request, *args, **kwargs):
+        task = self.get_object()
+        task.completed = True
+        task.save()
+        return Response({"message": "Task marked as completed!"}, status=status.HTTP_200_OK)

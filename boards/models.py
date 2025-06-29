@@ -21,10 +21,19 @@ class Tasks(models.Model) :
         ('done', 'Done'),
     ]
 
+    PRIORITY = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+    ]
+
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='tasks')
     title = models.CharField(max_length=150)
     description = models.TextField(blank=True)
     status = models.CharField(max_length=20, choices=STATUS, default='todo')
+    priority = models.CharField(max_length=20, choices=PRIORITY, default='medium')
+    due_date = models.DateTimeField(null=True, blank=True)
+    completed = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
