@@ -61,10 +61,12 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
         task.delete()
         
         return Response({"message": "Task deleted successfully!"}, status=status.HTTP_200_OK)
-   
-   
+    
     def patch(self, request, *args, **kwargs):
         task = self.get_object()
-        task.completed = True
-        task.save()
-        return Response({"message": "Task marked as completed!"}, status=status.HTTP_200_OK)
+        
+        serializer = self.get_serializer(task, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        
+        return Response({"message": "Task updated successfully!"}, status=status.HTTP_200_OK)

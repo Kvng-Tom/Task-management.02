@@ -155,7 +155,7 @@ class ForgotPasswordView(APIView):
         
         url = "https://api.useplunk.com/v1/track"
         headers = {
-            "Authorization": "Bearer sk_10c4a02e1119df59dedfc538c730b4e437b997aa7ff781f0",
+            "Authorization": "Bearer sk_f1a0a516aca711fd52ba193b1bfd04751ca591abb96e9b5a",
             "Content-Type": "application/json"
         }
         data = {
