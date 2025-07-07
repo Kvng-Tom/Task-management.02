@@ -4,8 +4,7 @@ from.views import *
 
 
 urlpatterns = [
-    path('boards/', BoardListCreateView.as_view()),
-    path('boards/<int:pk>/', BoardDeleteView.as_view()),
-    path('boards/<int:board_id>/tasks/', TaskListCreateView.as_view()),
-    path('boards/<int:board_id>/tasks/<int:pk>/', TaskDetailView.as_view()),
+    path('tasks/', TaskListCreateView.as_view(), name='tasks_list'),
+    path('tasks/<int:pk>/', TaskDetailView.as_view(), name='tasks_detail'),
+    path('tasks/<int:pk>/complete/', ChangeTaskStatusView.as_view(), name='tasks_complete'),
 ]
